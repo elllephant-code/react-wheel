@@ -1,0 +1,21 @@
+{
+    "name": "react-wheel",
+    "version": "1.0.0",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "storybook": "start-storybook -p 6006"
+    },
+    "author": "Kervens Volcy <kervensvolcy@outlook.com>",
+    "license": "MIT",
+    "keywords": [],
+    "description": "",
+    "devDependencies": {
+        "@storybook/react": "^5.0.11",
+        "@types/react": "^16.8.17",
+        "@types/storybook__react": "^4.0.1",
+        "awesome-typescript-loader": "^5.2.1",
+        "react": "^16.8.6",
+        "typescript": "^3.4.5"
+    }
+}
