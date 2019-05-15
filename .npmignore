@@ -1,0 +1,9 @@
+.storybook/
+.vscode/
+node_modules/
+src/
+stories/
+.gitattributes
+.gitignore
+tsconfig.dev.json
+tsconfig.prod.json
