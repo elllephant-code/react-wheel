@@ -1,17 +1,10 @@
-const PI = Math.PI
-const PI_H = PI / 2
-// const PI_Q = PI / 4
+import Vector2 from '../utils/vector2';
+import safe from '../utils/safe';
 
 export interface IWheelItem {
-    /** position of item expressed in fraction of the angularSector. Must be a number between 0 and 1 */
     position: number
-    /** offset relative to wheel circle along the radius-axis */
-    offset: number
-}
-
-export interface IPolarCoodinates {
-    radius: number,
-    angle: number,
+    rOffset: number
+    tOffset: number
 }
 
 export interface IWheel {
@@ -27,8 +20,8 @@ interface ISectorEdges {
 
 function sectorEdges(angularSector: number): ISectorEdges {
     return {
-        start: (2 * Math.PI - angularSector) / 2,
-        end: (2 * PI + angularSector) / 2,
+        start: (1 - angularSector) / 2,
+        end: (1 + angularSector) / 2,
     }
 }
 
@@ -39,20 +32,27 @@ function sectorEdges(angularSector: number): ISectorEdges {
  */
 function placeOnWheel(
     item: IWheelItem,
-    wheel: IWheel = {},
-): IPolarCoodinates {
+    wheel: IWheel = {}
+): Vector2 {
 
-    const angularSector = wheel.angularSector || 2 * PI
-    const radius = wheel.radius || 0
-    const rotation = wheel.rotation || 0
+    const radius = safe<number>(100, wheel.radius)
+    const rotation = safe<number>(0, wheel.rotation)
+    const angularSector = safe<number>(1, wheel.angularSector)
+
+    const position = safe<number>(0, item.position)
+    const rOffset = safe<number>(0, item.rOffset)
+    const tOffset = safe<number>(0, item.tOffset)
 
     const start = sectorEdges(angularSector).start
-    const sectorPortion = (angularSector * item.position) % angularSector
+    const sectorPortion = (angularSector * position) % angularSector
 
-    return {
-        radius: radius + item.offset,
-        angle: start + sectorPortion + rotation
-    }
+    const newPosition = new Vector2(radius, start, 'polar')
+        .rotate(sectorPortion)
+        .rotate(rotation)
+        .rotate(tOffset)
+        .lengthen(rOffset)
+
+    return newPosition
 }
 
 export default placeOnWheel

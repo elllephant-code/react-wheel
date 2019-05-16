@@ -7,6 +7,12 @@ export interface IitemRenderConfig {
     style: CSSProperties
 }
 
+export interface IWheelModifierInput {
+    items: IWheelItem[], wheel: IWheel
+}
+
+export type wheelModifier = (input: IWheelModifierInput) => IWheelModifierInput
+
 export interface IWheelProps extends IWheel {
     radius: number
     angularSector: number
@@ -14,6 +20,8 @@ export interface IWheelProps extends IWheel {
 
     items: IWheelItem[]
     render: (config: IitemRenderConfig) => JSX.Element
+
+    modifiers: wheelModifier[]
 }
 
 export default class Wheel extends React.Component<IWheelProps, any> {
@@ -24,18 +32,26 @@ export default class Wheel extends React.Component<IWheelProps, any> {
         rotation: 0,
 
         items: [],
-        render: ({ index, style }: IitemRenderConfig) => <div style={style}>{index}</div>
+        render: ({ index, style }: IitemRenderConfig) => <div style={style}>{index}</div>,
+        modifiers: []
     }
 
     public render() {
 
-        const { items, radius, render, rotation, angularSector } = this.props
+        const { radius, render, rotation, angularSector, modifiers } = this.props
 
-        const wheel = {
+        let items: IWheelItem[] = this.props.items
+        let wheel: IWheel = {
             radius,
-            rotation: rotation * 2 * Math.PI,
-            angularSector: angularSector * 2 * Math.PI
+            rotation: rotation,
+            angularSector: angularSector
         }
+
+        modifiers.forEach(modifier => {
+            const input = modifier({ items, wheel })
+            items = input.items
+            wheel = input.wheel
+        })
 
         const renderedItems = items.map((item, index) => {
             const origin = { x: radius, y: radius }

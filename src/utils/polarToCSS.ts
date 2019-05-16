@@ -1,14 +1,15 @@
 import { CSSProperties } from 'react'
+import Vector2 from './vector2';
 export interface IPolarCoordinates {
     radius: number,
     angle: number,
 }
 
-function polarToCSS({ radius, angle }: IPolarCoordinates, origin: { x: number, y: number }): CSSProperties {
+function polarToCSS(posVector: Vector2, origin: { x: number, y: number }): CSSProperties {
     return {
         position: 'absolute',
-        left: origin.x + radius * Math.cos(angle),
-        bottom: origin.y + radius * Math.sin(angle),
+        left: origin.x + posVector.x,
+        bottom: origin.y + posVector.y,
     }
 }
 
