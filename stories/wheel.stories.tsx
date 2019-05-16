@@ -1,8 +1,8 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
-import Wheel, { repulse } from '../src';
+import Wheel, { repulse, attract } from '../src';
 
-const a = -1 / 12;
+const a = 1 / 12;
 
 const items = [
     { position: a * 0, tOffset: 0, rOffset: 0 },
@@ -28,8 +28,8 @@ storiesOf('Wheel', module)
             items={items}
             radius={radius}
             modifiers={[
-                repulse({ index: 1, strength: 0 }),
-                repulse({ index: 10, strength: -.1 }),
-                repulse({ index: 7, strength: 0 }),
+                // repulse({ index: 0, strength: .1 }),
+                attract({ index: 0, strength: 0 }),
+                // repulse({ index: 8, strength: .1 }),
             ]}
         />))

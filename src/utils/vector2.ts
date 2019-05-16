@@ -1,6 +1,6 @@
 const cos = (x: number) => Math.cos(x * 2 * Math.PI)
 const sin = (x: number) => Math.sin(x * 2 * Math.PI)
-const atan2 = (x: number, y: number) => Math.atan2(x, y) / (2 * Math.PI)
+const atan2 = (y: number, x: number) => Math.atan2(y, x) / (2 * Math.PI)
 const sq = (x: number) => Math.pow(x, 2)
 const sqrt = Math.sqrt
 
@@ -94,7 +94,7 @@ export default class Vector2 {
         this.y = y
 
         this.r = sqrt(sq(x) + sq(y))
-        this.t = atan2(x, y)
+        this.t = atan2(y, x)
     }
 
 }

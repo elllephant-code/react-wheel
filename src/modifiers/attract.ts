@@ -2,14 +2,14 @@ import { wheelModifier } from '../component/Wheel'
 import C from '../utils/cycle'
 import safe from '../utils/safe'
 
-export interface IRepulseInput {
+export interface IAttractInput {
     index?: number,
     strength?: number
 }
 
-export type repulse = (input?: IRepulseInput) => wheelModifier
+export type attract = (input?: IAttractInput) => wheelModifier
 
-const repulse: repulse = function (input = {}) {
+const attract: attract = function (input = {}) {
 
     const index = safe(0, input.index)
     const strength = safe(.1, input.strength)
@@ -27,11 +27,11 @@ const repulse: repulse = function (input = {}) {
             const next = items[inext] // i-th next element
             const prev = items[iprev] // i-th previous element
 
-            const nextOffset = strength * (.5 - C.distance(curr.position, next.position, 1))
-            const prevOffset = strength * (.5 - C.distance(curr.position, prev.position, 1))
+            const nextOffset = strength * C.distance(curr.position, next.position, 1) * (.5 - C.distance(curr.position, next.position, 1)) / .5
+            const prevOffset = strength * C.distance(curr.position, prev.position, 1) * (.5 - C.distance(curr.position, prev.position, 1)) / .5
 
-            next.tOffset = next.tOffset + nextOffset
-            prev.tOffset -= prevOffset
+            next.tOffset -= nextOffset
+            prev.tOffset += prevOffset
         }
 
         return {
@@ -42,4 +42,4 @@ const repulse: repulse = function (input = {}) {
     }
 }
 
-export default repulse
+export default attract
